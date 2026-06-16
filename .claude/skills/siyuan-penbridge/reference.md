@@ -54,7 +54,7 @@ Config file (`penbridge config path` prints the location, default
 ```bash
 penbridge config set --base-url http://127.0.0.1:6806 --token <TOKEN>
 penbridge config show        # secrets masked
-penbridge config test        # calls system/version
+penbridge config test        # checks connectivity + token (non-zero on bad token)
 ```
 
 Auth header formats accepted by the kernel: `Authorization: Token <tok>`,

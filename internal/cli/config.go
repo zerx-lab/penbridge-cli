@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
@@ -105,16 +106,36 @@ func newConfigSetCmd() *cobra.Command {
 func newConfigTestCmd() *cobra.Command {
 	return &cobra.Command{
 		Use:   "test",
-		Short: "Verify connectivity and auth by calling system/version",
+		Short: "Verify connectivity and that the configured token authenticates",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			resp, err := apiClient.Call(cmd.Context(), "/api/system/version", nil)
+			cfg := apiClient.Config()
+
+			// Step 1 - connectivity. system/version is a PUBLIC endpoint (no auth
+			// middleware), so it succeeds regardless of the token and only tells
+			// us the kernel is reachable.
+			verResp, err := apiClient.Call(cmd.Context(), "/api/system/version", nil)
+			if errors.Is(err, client.ErrDryRun) {
+				return nil
+			}
 			if err != nil {
-				return err
+				return fmt.Errorf("cannot reach SiYuan kernel at %s: %w", cfg.BaseURL, err)
 			}
 			var ver string
-			_ = jsonUnmarshalString(resp.Data, &ver)
-			fmt.Fprintf(os.Stderr, "OK: connected to %s (kernel version %s)\n", apiClient.Config().BaseURL, ver)
+			_ = jsonUnmarshalString(verResp.Data, &ver)
+
+			// Step 2 - authentication. lsNotebooks requires auth, so an invalid or
+			// missing token is rejected here (HTTP 401), which is what actually
+			// validates the configured token.
+			_, err = apiClient.Call(cmd.Context(), "/api/notebook/lsNotebooks", map[string]any{})
+			if errors.Is(err, client.ErrDryRun) {
+				return nil
+			}
+			if err != nil {
+				return fmt.Errorf("reached SiYuan kernel %s at %s, but authentication failed (check --token): %w", ver, cfg.BaseURL, err)
+			}
+
+			fmt.Fprintf(os.Stderr, "OK: connected to %s (kernel %s); authentication succeeded\n", cfg.BaseURL, ver)
 			return nil
 		},
 	}

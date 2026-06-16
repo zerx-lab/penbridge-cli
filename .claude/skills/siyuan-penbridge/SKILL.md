@@ -28,7 +28,8 @@ edit any notebook, document, block, or paragraph in a local SiYuan workspace.
    ```bash
    penbridge config test
    ```
-   If it prints `OK: connected to ... (kernel version X)`, you are ready.
+   If it prints `OK: ... authentication succeeded`, you are ready. It exits
+   non-zero with an authentication error if the token is wrong.
 
 3. Auth: the kernel API defaults to `http://127.0.0.1:6806`. On localhost with no
    access-auth-code set, no token is needed. Otherwise set the API token (SiYuan:
