@@ -1,0 +1,18 @@
+# Compiled binaries
+/penbridge
+/penbridge.exe
+*.exe
+*.out
+*.test
+
+# Build / dist output
+/dist/
+/build/
+
+# Profiling
+*.prof
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
