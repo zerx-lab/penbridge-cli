@@ -4,6 +4,8 @@ Concrete, copy-paste workflows for editing a SiYuan workspace with `penbridge`.
 All examples assume `penbridge` is on PATH (or use `./penbridge.exe`). Replace
 `<...>` placeholders with real IDs you discovered.
 
+**Related**: [SKILL.md](SKILL.md) for the quick start and core loop, [reference.md](reference.md) for the full command and schema reference.
+
 ## Contents
 
 - [Golden rule: discover IDs first](#golden-rule-discover-ids-first)
@@ -163,7 +165,7 @@ edits the typed `block` commands (Markdown) are simpler and preferred.
 ## Preview without sending
 
 Append `--dry-run` to any command to print the exact request (method, URL,
-redacted auth, body) without sending it - ideal before destructive edits:
+redacted auth, body) without sending it — ideal before destructive edits:
 ```bash
 penbridge block delete <ID> --dry-run
 penbridge block update <ID> --content-file - --data-type markdown --dry-run <<'MD'

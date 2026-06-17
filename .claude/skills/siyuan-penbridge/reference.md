@@ -2,6 +2,8 @@
 
 Complete reference for the `penbridge` CLI and the SiYuan kernel API it wraps.
 
+**Related**: [SKILL.md](SKILL.md) for the quick start and core loop, [recipes.md](recipes.md) for copy-paste workflows.
+
 ## Contents
 
 - [Global flags](#global-flags)
@@ -142,7 +144,7 @@ stdin; recommended for long/multi-line content). Default dataType is `markdown`.
 | `block delete <id>` | deleteBlock | destructive |
 | `block move <id> [--parent-id] [--previous-id]` | moveBlock | |
 | `block fold <id>` / `block unfold <id>` | foldBlock / unfoldBlock | headings/lists |
-| `block get <id> [--mode md\|textmark]` | getBlockKramdown | `{id, kramdown}` - read before editing |
+| `block get <id> [--mode md\|textmark]` | getBlockKramdown | `{id, kramdown}` — read before editing |
 | `block info <id>` | getBlockInfo | `{box,path,rootID,rootTitle,...}` |
 | `block dom <id>` | getBlockDOM | `{id, dom}` |
 | `block children <id>` | getChildBlocks | direct children |
